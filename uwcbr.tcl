@@ -1,7 +1,7 @@
 ########################################################################################
 # ----------------------------------------------------------------------------------
-# This script depicts a very simple but complete stack in which two nodes send data
-# to a common sink. The second node is used by the first one as a relay to send data to the sink.
+# This script depicts a very simple but complete stack in which several nodes send data
+# to a common sink.
 # The routes are configured by using UW/STATICROUTING.
 # The application used to generate data is UW/CBR.
 # ----------------------------------------------------------------------------------
