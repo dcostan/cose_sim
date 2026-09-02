@@ -72,7 +72,7 @@ set opt(ack_mode)           "setNoAckMode"
 
 set opt(txpower)            180.0 
 set opt(propagation_speed)  1400
-set opt(rngstream)	    1
+set opt(rngstream)          1
 set opt(profile_overhead)   6
 set opt(plain_data)         50
 set opt(cbr_period)         60
@@ -327,12 +327,9 @@ $position_sink setY_ 0
 $position_sink setZ_ -1000
 
 # Setup routing table
-for {set id1 0} {$id1 < [expr $opt(nn) - 1]} {incr id1}  {
-    set id2 [expr $id1 + 1]
-    $ipr($id1) addRoute [$ipif_sink addr] [$ipif($id2) addr]
+for {set id1 0} {$id1 < [expr $opt(nn)]} {incr id1}  {
+    $ipr($id1) addRoute [$ipif_sink addr] [$ipif_sink addr]
 }
-set last_id [expr int($opt(nn) - 1)]
-$ipr($last_id) addRoute [$ipif_sink addr] [$ipif_sink addr]
 
 
 #####################
@@ -371,14 +368,13 @@ proc finish {} {
     set sum_cbr_throughput     0
     set sum_per                0
     set sum_cbr_sent_pkts      0.0
-    set sum_cbr_rcv_pkts       0.0  
-    set sum_bytes_sent         0.0
+    set sum_cbr_rcv_pkts       0.0
     set sum_thr_eff            0.0
 
     for {set i 0} {$i < $opt(nn)} {incr i}  {
         set cbr_throughput           [$cbr_sink($i) getthr]
-        set cbr_sent_pkts        [$cbr($i) getsentpkts]
-        set cbr_rcv_pkts           [$cbr_sink($i) getrecvpkts]
+        set cbr_sent_pkts            [$cbr($i) getsentpkts]
+        set cbr_rcv_pkts             [$cbr_sink($i) getrecvpkts]
         
         puts "cbr_sink($i) throughput                    : $cbr_throughput"
 
@@ -387,12 +383,12 @@ proc finish {} {
         set sum_cbr_throughput [expr $sum_cbr_throughput + $cbr_throughput]
         set sum_cbr_sent_pkts  [expr $sum_cbr_sent_pkts + $cbr_sent_pkts]
         set sum_cbr_rcv_pkts   [expr $sum_cbr_rcv_pkts + $cbr_rcv_pkts]
-        set sum_bytes_sent     [expr $sum_bytes_sent + [$phy($i) getTransmittedBytes]]
     }
 
     for {set i 0} {$i < $opt(nn)} {incr i}  {
         set cbr_rcv_pkts           [$cbr_sink($i) getrecvpkts]
-        set throughput_efficency [expr $cbr_rcv_pkts * ($opt(pktsize) - 4 - $opt(profile_overhead)) / $sum_bytes_sent]
+        set cbr_sent_pkts          [$phy($i) getTransmittedBytes]
+        set throughput_efficency [expr $cbr_rcv_pkts * ($opt(plain_data)) / $cbr_sent_pkts]
         set sum_thr_eff          [expr $sum_thr_eff + $throughput_efficency]
         puts "cbr_sink($i) throughput efficency          : $throughput_efficency"
     }
