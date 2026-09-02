@@ -31,7 +31,7 @@
 # Flags to enable or disable options #
 ######################################
 set opt(trace_files)        0
-set opt(bash_parameters)    0
+set opt(bash_parameters)    1
 
 #####################
 # Library Loading   #
@@ -74,7 +74,7 @@ set opt(txpower)            180.0
 set opt(propagation_speed)  1400
 set opt(rngstream)	    1
 set opt(profile_overhead)   6
-set opt(pktsize)            [expr $opt(profile_overhead) + 4 + 50] # Four bytes added by the rmw_desert packaging system + payload
+set opt(plain_data)         50
 set opt(cbr_period)         60
 
 if {$opt(bash_parameters)} {
@@ -88,12 +88,15 @@ if {$opt(bash_parameters)} {
         puts "Please try again."
         return
     } else {
-        set opt(pktsize)       [lindex $argv 0]
-        set opt(cbr_period)    [lindex $argv 1]
-        set opt(rngstream)       [lindex $argv 2]
-        set opt(nn)       [lindex $argv 3]
+        set opt(plain_data)       [lindex $argv 0]
+        set opt(profile_overhead) [lindex $argv 1]
+        set opt(rngstream)        [lindex $argv 2]
+        set opt(nn)               [lindex $argv 3]
     }
 }
+
+# Four bytes added by the rmw_desert packaging system + payload
+set opt(pktsize)            [expr $opt(profile_overhead) + 4 + $opt(plain_data)] 
 
 global defaultRNG
 for {set k 0} {$k < $opt(rngstream)} {incr k} {
