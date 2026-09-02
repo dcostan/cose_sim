@@ -80,8 +80,8 @@ set opt(cbr_period)         60
 if {$opt(bash_parameters)} {
     if {$argc != 4} {
         puts "The script requires three inputs:"
-        puts "- the first one is the cbr packet size (byte);"
-        puts "- the second one is the cbr poisson period (seconds);"
+        puts "- the first one is the plain packet size (byte);"
+        puts "- the second one is the profile overhead size (byte);"
         puts "- the third one is the random generator substream;"
         puts "- the fourth one is the number of nodes;"
         puts "example: ns uwcbr.tcl 125 60 13 2"
