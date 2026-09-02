@@ -308,23 +308,22 @@ for {set id1 0} {$id1 < $opt(nn)} {incr id1}  {
 
 # Fill ARP tables
 for {set id1 0} {$id1 < $opt(nn)} {incr id1}  {
-    for {set id2 0} {$id2 < $opt(nn)} {incr id2}  {
-      $mll($id1) addentry [$ipif($id2) addr] [$mac($id2) addr]
-    }   
-    $mll($id1) addentry [$ipif_sink addr] [ $mac_sink addr]
-    $mll_sink addentry [$ipif($id1) addr] [ $mac($id1) addr]
+    $mll($id1) addentry [$ipif_sink addr] [$mac_sink addr]
+    $mll_sink addentry [$ipif($id1) addr] [$mac($id1) addr]
 }
 
 # Setup positions
-# TODO Implement a random node position inside a rectangle
-for {set id1 0} {$id1 < $opt(nn)} {incr id1}  {
-    $position($id1) setX_ [expr 500 * $id1]
-    $position($id1) setY_ [expr 500 * $id1]
+for {set id1 0} {$id1 < $opt(nn)} {incr id1} {
+    set x [expr {500.0 * rand()}]
+    set y [expr {500.0 * rand()}]
+
+    $position($id1) setX_ $x
+    $position($id1) setY_ $y
     $position($id1) setZ_ -1000
 }
 
-$position_sink setX_ [expr 500 * $opt(nn)]
-$position_sink setY_ [expr 500 * $opt(nn)]
+$position_sink setX_ 0
+$position_sink setY_ 0
 $position_sink setZ_ -1000
 
 # Setup routing table
@@ -398,9 +397,9 @@ proc finish {} {
         puts "cbr_sink($i) throughput efficency          : $throughput_efficency"
     }
         
-    set ipheadersize        [$ipif(1) getipheadersize]
-    set udpheadersize       [$udp(1) getudpheadersize]
-    set cbrheadersize       [$cbr(1) getcbrheadersize]
+    set ipheadersize        [$ipif(0) getipheadersize]
+    set udpheadersize       [$udp(0) getudpheadersize]
+    set cbrheadersize       [$cbr(0) getcbrheadersize]
     
     puts "Mean Throughput          : [expr ($sum_cbr_throughput/($opt(nn)))]"
     puts "AVG throughput efficency : [expr ($sum_thr_eff/($opt(nn)))]"

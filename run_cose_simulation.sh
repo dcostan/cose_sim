@@ -10,8 +10,8 @@ for k in {0..2}
 do
 	for i in {0..5} 
 	do
-		echo "ns uwcbr.tcl ${plain_data[k]} 6 $i 2 >> ${file}_${plain_data[k]}B.txt 2>/dev/null"
-		ns uwcbr.tcl ${plain_data[k]} 6 $i 2 >> ${file}_${plain_data[k]}B.txt 2>/dev/null
+		echo "ns uwcbr.tcl ${plain_data[k]} 6 $i 8 >> ${file}_${plain_data[k]}B.txt 2>/dev/null"
+		ns uwcbr.tcl ${plain_data[k]} 6 $i 8 >> ${file}_${plain_data[k]}B.txt 2>/dev/null
 	done
 	 
 	LC_NUMERIC=C awk -F ":" '/Mean Throughput/ {printf("%.5f\n",$2)}' ${file}_${plain_data[k]}B.txt > mean_throughput_cose${plain_data[k]}B.csv
