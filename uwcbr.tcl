@@ -374,6 +374,7 @@ proc finish {} {
     set sum_cbr_sent_pkts      0.0
     set sum_cbr_rcv_pkts       0.0  
     set sum_bytes_sent         0.0
+    set sum_thr_eff            0.0
 
     for {set i 0} {$i < $opt(nn)} {incr i}  {
         set cbr_throughput           [$cbr_sink($i) getthr]
@@ -393,6 +394,7 @@ proc finish {} {
     for {set i 0} {$i < $opt(nn)} {incr i}  {
         set cbr_rcv_pkts           [$cbr_sink($i) getrecvpkts]
         set throughput_efficency [expr $cbr_rcv_pkts * ($opt(pktsize) - 4 - $opt(profile_overhead)) / $sum_bytes_sent]
+        set sum_thr_eff          [expr $sum_thr_eff + $throughput_efficency]
         puts "cbr_sink($i) throughput efficency          : $throughput_efficency"
     }
         
@@ -401,6 +403,7 @@ proc finish {} {
     set cbrheadersize       [$cbr(1) getcbrheadersize]
     
     puts "Mean Throughput          : [expr ($sum_cbr_throughput/($opt(nn)))]"
+    puts "AVG throughput efficency : [expr ($sum_thr_eff/($opt(nn)))]"
     puts "Sent Packets             : $sum_cbr_sent_pkts"
     puts "Received Packets         : $sum_cbr_rcv_pkts"
     puts "Packet Delivery Ratio    : [expr $sum_cbr_rcv_pkts / $sum_cbr_sent_pkts * 100]"
