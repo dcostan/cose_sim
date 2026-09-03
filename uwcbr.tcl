@@ -70,7 +70,7 @@ set opt(bw)                 5000.0
 set opt(bitrate)            1000.0
 set opt(ack_mode)           "setNoAckMode"
 
-set opt(txpower)            180.0 
+set opt(txpower)            176.82
 set opt(propagation_speed)  1400
 set opt(rngstream)          1
 set opt(profile_overhead)   6
